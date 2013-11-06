@@ -1,0 +1,115 @@
+/*
+     ARM IP interface
+
+     Linkerscript_ROM:
+                      Bepaalt wat waar komt te staan in het geheugen
+
+     opmerkingen:
+                 -Dit is dus de ROM versie; de code komt in het flash te staan.
+
+*/
+
+OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+ENTRY(_start)
+STARTUP(crt0.o)
+
+MEMORY
+{
+    rom : ORIGIN = 0x00000000, LENGTH = 504K
+    ram : ORIGIN = 0x40000000, LENGTH = 32K
+}
+
+/* definitie van stackgroote voor de verschilende operation modes */
+__ram_size__                = 32K;
+
+__STACK_SIZE_FIQ__          = 0x100;
+__STACK_SIZE_IRQ__          = 0x100;
+__STACK_SIZE_SUPERVISOR__   = 0x4;
+__STACK_SIZE_ABORT__        = 0x4;
+__STACK_SIZE_UNDEFINED__    = 0x4;
+
+__stack_end__               = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ -
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__ - __STACK_SIZE_ABORT__ -
+                              __STACK_SIZE_UNDEFINED__;
+__stack_end_undefined__     = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ -
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__ - __STACK_SIZE_ABORT__;
+__stack_end_abort__         = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ -
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__;
+__stack_end_supervisor__    = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ -
+                              __STACK_SIZE_IRQ__;
+__stack_end_irq__           = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__;
+__stack_end_fiq__           = 0x40000000 + __ram_size__ - 4;
+
+
+SECTIONS {
+    /* We beginnen op adres 0 */
+    . = 0;
+    startup : { *(.startup)} > rom    /*  Place startup first.    */
+
+    /* Indeling van de eigenlijke code */
+    .text :
+    {
+        *(EXCLUDE_FILE (*text.iwram*) .text)
+        *(.text.*)
+        *(.stub)
+        /* .gnu.warning sections are handled specially by elf32.em.  */
+        *(.gnu.warning)
+        *(.gnu.linkonce.t*)
+        *(.glue_7 .glue_7t)
+
+        . = ALIGN(4);
+    } > rom
+
+    /* read-only data */
+    .rodata :
+    {
+        *(.rodata)
+        *all.rodata*(*)
+        *(.roda)
+        *(.rodata.*)
+        *(.gnu.linkonce.r*)
+
+        . = ALIGN(4);
+    } > rom
+
+    __ro_end = . ;
+
+    /*  geinitialiseerde data. Hoort in RAM, maar staat in flash
+        Hier bepalen we waar het zit, zodat crt0.s het straks over
+        kan kopieren */
+    .data :
+    {
+        __data_beg__ = .;       /*  Deze wordt in crt0.s gebruikt om het begin van het data-blok te vinden */
+        __data_beg_src__ = __ro_end;
+
+        *(.data)
+        *(.data.*)
+        *(.gnu.linkonce.d*)
+        CONSTRUCTORS
+
+        . = ALIGN(4);
+    } > ram AT > rom
+    __data_end__ = .;           /*  Deze wordt in crt0.s gebruikt om het eind van het data-blok te vinden */
+	__data_end = .;
+    /* Ongebruikt geheugen. Dit wordt straks door crt0.s gebruikt om
+       dit ongebruikte geheugen op nul te stellen. */
+    .bss :
+    {
+    	__bss_start = .;
+        __bss_beg__ = .;        /*  Deze wordt in crt0.s gebruikt om het begin van het BSS te vinden */
+
+        *(.bss)
+
+        /* Align here to ensure that the .bss section occupies space up to
+        _end.  Align after .bss to ensure correct alignment even if the
+        .bss section disappears because there are no input sections. */
+    . = ALIGN(4);
+    } > ram
+}
+. = ALIGN(4);
+
+/* En deze voor crt0.s om het eind van het BSS te kunnen vinden */
+_end = .;
+_bss_end__ = . ; __bss_end__ = . ; __end__ = . ; __bss_end = .;
+PROVIDE (end = .);

@@ -1,0 +1,191 @@
+/*
+ * linkerscript
+ */
+
+OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+ENTRY(_start)
+STARTUP(crt0.o)
+
+MEMORY
+{
+	ram : ORIGIN = 0x40000000, LENGTH = 32K
+	rom : ORIGIN = 0x00000000, LENGTH = 504K
+}
+/* definitie van stackgroote voor de verschilende operation modes */
+__ram_size__                = 32K;
+
+__STACK_SIZE_FIQ__          = 0x100;
+__STACK_SIZE_IRQ__          = 0x100;
+__STACK_SIZE_SUPERVISOR__   = 0x4;
+__STACK_SIZE_ABORT__        = 0x4;
+__STACK_SIZE_UNDEFINED__    = 0x4;
+
+__stack_end__               = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ - 
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__ - __STACK_SIZE_ABORT__ -
+                              __STACK_SIZE_UNDEFINED__;
+__stack_end_undefined__     = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ - 
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__ - __STACK_SIZE_ABORT__;
+__stack_end_abort__         = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ - 
+                              __STACK_SIZE_IRQ__ - __STACK_SIZE_SUPERVISOR__;
+__stack_end_supervisor__    = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__ - 
+                              __STACK_SIZE_IRQ__;
+__stack_end_irq__           = 0x40000000 + __ram_size__ - 4 - __STACK_SIZE_FIQ__;
+__stack_end_fiq__           = 0x40000000 + __ram_size__ - 4;
+
+
+SECTIONS
+{
+	__sp = 0x40000000 + 32K;
+
+	/* instructions */
+	.text :
+	{
+		__text_start = . ;
+
+		*(EXCLUDE_FILE (*text.iwram*) .text)
+		*(.text.*)
+		*(.stub)
+		/* .gnu.warning sections are handled specially by elf32.em.  */
+		*(.gnu.warning)
+		*(.gnu.linkonce.t*)
+		*(.glue_7 .glue_7t)
+
+	    KEEP (*(.init.crt_i_begin))
+	    KEEP (*(.init))
+	    KEEP (*(.init.crt_end_n))
+
+	    KEEP (*(.fini.crt_i_begin))
+	    KEEP (*(.fini))
+		KEEP (*(.fini.crt_end_n))
+
+		. = ALIGN(4);
+	} > ram
+
+	__text_end = . ;
+
+	.vectors : AT(0)
+	{
+		__vectors_start = . ;
+		*(.vectors)
+		. = ALIGN(4);
+	} > ram
+
+	__vectors_end = . ;
+	__vectors_load_addr = LOADADDR(.vectors);
+
+	/* read-only data */
+	.rodata :
+	{
+		*(.rodata)
+		*all.rodata*(*)
+		*(.roda)
+		*(.rodata.*)
+		*(.gnu.linkonce.r*)
+
+		KEEP (*(.ctors.crt_i_begin))
+		KEEP (*(SORT(.ctors)))
+		KEEP (*(.ctors.crt_end_n))
+
+		KEEP (*(.dtors.crt_i_begin))
+		KEEP (*(SORT(.dtors)))
+		KEEP (*(.dtors.crt_end_n))
+
+		. = ALIGN(4);
+	} > ram
+
+	.eh_frame :
+	{
+		KEEP (*(.eh_frame))
+
+		. = ALIGN(4);
+	} > ram
+
+	.gcc_except_table :
+	{
+		*(.gcc_except_table)
+
+		. = ALIGN(4);
+	} > ram
+
+	__ro_end = . ;
+
+	/* read-write data */
+	.data :
+	{
+		__data_start = .;
+   		__data_beg__ = .;  /* work with different CRT0;*/
+   		 __data_beg_src__ = __ro_end;
+		*(.data)
+		*(.data.*)
+		*(.gnu.linkonce.d*)
+		CONSTRUCTORS
+
+		. = ALIGN(4);
+	} > ram
+ 	__data_end__ = .;
+	__data_end = . ;
+
+	/* read-write uninitialized reserved space */
+	.bss :
+	{
+		__bss_start = . ;
+
+		*(.bss)
+		*(.dynbss)
+		*(.gnu.linkonce.b*)
+		*(COMMON)
+
+		. = ALIGN(4);
+	} > ram = 0
+
+	__bss_end = . ;
+
+	/* heap */
+	_end = . ;
+	__end__ = . ;
+	_bss_end__ = . ; __bss_end__ = . ; __end__ = . ;  
+	PROVIDE (end = _end);
+
+/*-----------------------------------*/
+
+	/* STAB debugging sections */
+	.stab			0 : { *(.stab) }
+	.stabstr		0 : { *(.stabstr) }
+	.stab.excl		0 : { *(.stab.excl) }
+	.stab.exclstr	0 : { *(.stab.exclstr) }
+	.stab.index		0 : { *(.stab.index) }
+	.stab.indexstr	0 : { *(.stab.indexstr) }
+	.comment		0 : { *(.comment) }
+
+	/* DWARF debug sections
+	   Symbols in the DWARF debugging sections are relative to the beginning
+	   of the section so we begin them at 0. */
+
+	/* DWARF 1 */
+	.debug			0 : { *(.debug) }
+	.line			0 : { *(.line) }
+
+	/* GNU DWARF 1 extensions */
+	.debug_srcinfo	0 : { *(.debug_srcinfo) }
+	.debug_sfnames	0 : { *(.debug_sfnames) }
+
+	/* DWARF 1.1 and DWARF 2 */
+	.debug_aranges	0 : { *(.debug_aranges) }
+	.debug_pubnames	0 : { *(.debug_pubnames) }
+
+	/* DWARF 2 */
+	.debug_info		0 : { *(.debug_info) }
+	.debug_abbrev	0 : { *(.debug_abbrev) }
+	.debug_line		0 : { *(.debug_line) }
+	.debug_frame	0 : { *(.debug_frame) }
+	.debug_str		0 : { *(.debug_str) }
+	.debug_loc		0 : { *(.debug_loc) }
+	.debug_macinfo	0 : { *(.debug_macinfo) }
+
+	/* SGI/MIPS DWARF 2 extensions */
+	.debug_weaknames	0 : { *(.debug_weaknames) }
+	.debug_funcnames	0 : { *(.debug_funcnames) }
+	.debug_typenames	0 : { *(.debug_typenames) }
+	.debug_varnames		0 : { *(.debug_varnames) }
+}
