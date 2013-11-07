@@ -15,10 +15,10 @@
 #define yas 1
 #define zas 2
 
-short gemiddeld(int as);
+unsigned short gemiddeld(int as);
 void opschuiven(void);
-extern  void __enable_interrupts();
-extern  void __disable_interrupts();
+extern  void __enable_interrupts(void);
+extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128];
 extern 	int nieuwe_data;
 
@@ -27,14 +27,14 @@ extern 	int nieuwe_data;
 /******************************************************************************\
  main
 \******************************************************************************/
-short tel [3][stap];	// signed maken?
+unsigned short tel [3][stap];
 
 
 
-extern int main()
+extern int main(void)
 { 
 	/*   init libs   */
-	short zend[6];
+	unsigned short zend[6];
 	int i,t;
 	PLL_init();
 	SPI_init(0x0F);								// SPI_init(SPI configuratie)
@@ -60,6 +60,7 @@ extern int main()
 	while(1)
 	{	
 		if(nieuwe_data==0xFFFF){				// wordt 0xFFFF bij een interrupt van de transceiver
+			__disable_interrupts();
 
 			opschuiven();
 
@@ -81,6 +82,7 @@ extern int main()
 
 			UART_put("\n");
 			nieuwe_data=0x0000;
+			__enable_interrupts();
 		}
 	}
 	return 0;									// don't ever come near this
@@ -90,17 +92,17 @@ void opschuiven(void)
 {
 	int i;
 	for (i=0;i<stap;i++){
-		tel[xas][stap-i]=tel[xas][(stap-1)-i];
-		tel[yas][stap-i]=tel[yas][(stap-1)-i];
-		tel[zas][stap-i]=tel[zas][(stap-1)-i];
+		tel[xas][stap-i-1]=tel[xas][(stap-2)-i];
+		tel[yas][stap-i-1]=tel[yas][(stap-2)-i];
+		tel[zas][stap-i-1]=tel[zas][(stap-2)-i];
 	}
 
 }
 
-short gemiddeld(int as)
+unsigned short gemiddeld(int as)
 {
 	int avg,i=0;
-	short value=0;
+	unsigned short value=0;
 	for (i=0;i<stap;i++){
 		avg=avg+tel[as][i];
 	}
