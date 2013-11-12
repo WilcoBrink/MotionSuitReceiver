@@ -17,6 +17,7 @@
 
 unsigned short gemiddeld(int as);
 void opschuiven(void);
+short calibratie(void);
 extern  void __enable_interrupts(void);
 extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128];
@@ -36,6 +37,8 @@ extern int main(void)
 	/*   init libs   */
 	unsigned short zend[6];
 	int i,t;
+	short *pCal;
+	short Cal[3];
 	PLL_init();
 	SPI_init(0x0F);								// SPI_init(SPI configuratie)
 	UART_init();
@@ -57,6 +60,12 @@ extern int main(void)
 
 	}
 
+	*pCal=calibratie();
+
+	Cal[0]=pCal;
+	Cal[1]=pCal+1;
+	Cal[2]=pCal+2;
+
 	while(1)
 	{	
 		if(nieuwe_data==0xFFFF){				// wordt 0xFFFF bij een interrupt van de transceiver
@@ -65,7 +74,7 @@ extern int main(void)
 			opschuiven();
 
 			for(i=0;i<3;i++){
-				 tel[i][0]= (Received_Dataext[2*i]<<8) + Received_Dataext[2*i+1];
+				 tel[i][0]= ((Received_Dataext[2*i]<<8) + Received_Dataext[2*i+1])-Cal[i];
 			}
 			zend[0]=gemiddeld(xas);
 			zend[1]=gemiddeld(yas);
@@ -109,4 +118,33 @@ unsigned short gemiddeld(int as)
 	avg=avg/stap;
 	value=avg;
 	return value;
+}
+
+short calibratie()
+{
+	short x,y,z,i;
+	short calibratie[3];
+	short *pCalibratie;
+	pCalibratie=&calibratie[0];
+	int xi,yi,zi=0;
+	char b=0;
+
+	for (i=0;i<10;i++)
+	{
+		while(nieuwe_data!=0xFFFF);
+	x=(Received_Dataext[0]<<8) + Received_Dataext[1];
+	y=(Received_Dataext[2]<<8) + Received_Dataext[3];
+	z=(Received_Dataext[4]<<8) + Received_Dataext[5];
+	xi=xi+x;
+	yi=yi+y;
+	zi=zi+y;
+		nieuwe_data=0;
+	}
+
+	calibratie[0]=xi/10;
+	calibratie[1]=yi/10;
+	calibratie[2]=zi/10;
+
+
+	return pCalibratie;
 }
