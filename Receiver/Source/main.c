@@ -138,7 +138,7 @@ short *calibratie()
 	z=(Received_Dataext[4]<<8) + Received_Dataext[5];
 	xi=xi+x;
 	yi=yi+y;
-	zi=zi+y;
+	zi=zi+z;
 		nieuwe_data=0;
 	}
 
