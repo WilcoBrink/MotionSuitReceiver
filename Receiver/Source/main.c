@@ -17,7 +17,7 @@
 
 unsigned short gemiddeld(int as);
 void opschuiven(void);
-short calibratie(void);
+short *calibratie(void);
 extern  void __enable_interrupts(void);
 extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128];
@@ -122,7 +122,7 @@ unsigned short gemiddeld(int as)
 	return value;
 }
 
-short calibratie()
+short *calibratie()
 {
 	short x,y,z,i;
 	short calibratie_waarde[3];
