@@ -14,10 +14,10 @@
 #include "vic.h"
 #include "lcd.h"
 
-extern  void __enable_interrupts();
-extern  void __disable_interrupts();
+extern  void __enable_interrupts(void);
+extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128]="Testert";
-extern	int nieuwe_data = 0x0000;
+extern	int newData = 0x0000;
 
 int	busy = 0;
 int sequence_number = 0;
@@ -200,7 +200,7 @@ extern void MRF24J40_interrupt(void)
  		//	IOCLR0 |= (1<<8);
  		//	delay_us(500);
 		//}
-		nieuwe_data = 0xFFFF;			// als melding dat er nieuwe data is ontvangen
+		newData = 0xFFFF;			// als melding dat er nieuwe data is ontvangen
 		
 		MRF24_Rx_Data.Frame_Length = Received_Data[0];			// Parse data into MIWI_DATA_PKG Struct
 		StringCopy(MRF24_Rx_Data.MAC_Control, &Received_Data[1], 2);

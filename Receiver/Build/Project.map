@@ -74,9 +74,9 @@ startup
                 0x000009a8                lcd_display_sright
  .text          0x000009c4      0x674 ./../Source/main.o
                 0x000009c4                main
-                0x00000ccc                opschuiven
-                0x00000dac                gemiddeld
-                0x00000e68                calibratie
+                0x00000ccc                array_shift_right
+                0x00000dac                average
+                0x00000e68                calibrate
  .text          0x00001038      0xc3c ./../Source/MRF24J40.o
                 0x00001038                MRF24J40_init
                 0x000012ac                MRF24J40_send_byte
@@ -191,7 +191,7 @@ startup
  .bss           0x40000094        0x0 ./../Source/lcd.o
  .bss           0x40000094        0x0 ./../Source/main.o
  .bss           0x40000094        0xc ./../Source/MRF24J40.o
-                0x40000094                nieuwe_data
+                0x40000094                newData
                 0x40000098                busy
                 0x4000009c                sequence_number
  .bss           0x400000a0        0x0 ./../Source/pll.o
@@ -268,18 +268,18 @@ OUTPUT(./../Build/Project.elf elf32-littlearm)
  .comment       0x00000000       0x12 ./../Source/uart.o
  .comment       0x00000000       0x12 ./../Source/vic.o
 
-.debug_info     0x00000000     0x1078
+.debug_info     0x00000000     0x1079
  .debug_info    0x00000000       0xcd ./../Source/delay.o
  .debug_info    0x000000cd       0xa0 ./../Source/keys.o
  .debug_info    0x0000016d      0x271 ./../Source/lcd.o
- .debug_info    0x000003de      0x22f ./../Source/main.o
- .debug_info    0x0000060d      0x4c1 ./../Source/MRF24J40.o
- .debug_info    0x00000ace       0x3c ./../Source/pll.o
- .debug_info    0x00000b0a      0x131 ./../Source/spi.o
- .debug_info    0x00000c3b      0x242 ./../Source/uart.o
- .debug_info    0x00000e7d       0xd9 ./../Source/vic.o
- .debug_info    0x00000f56       0x91 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
- .debug_info    0x00000fe7       0x91 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_info    0x000003de      0x230 ./../Source/main.o
+ .debug_info    0x0000060e      0x4c1 ./../Source/MRF24J40.o
+ .debug_info    0x00000acf       0x3c ./../Source/pll.o
+ .debug_info    0x00000b0b      0x131 ./../Source/spi.o
+ .debug_info    0x00000c3c      0x242 ./../Source/uart.o
+ .debug_info    0x00000e7e       0xd9 ./../Source/vic.o
+ .debug_info    0x00000f57       0x91 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_info    0x00000fe8       0x91 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
 
 .debug_abbrev   0x00000000      0x68c
  .debug_abbrev  0x00000000       0x76 ./../Source/delay.o
@@ -329,37 +329,37 @@ OUTPUT(./../Build/Project.elf elf32-littlearm)
  .debug_aranges
                 0x00000140       0x20 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
 
-.debug_line     0x00000000      0x7a4
+.debug_line     0x00000000      0x7a6
  .debug_line    0x00000000       0x82 ./../Source/delay.o
  .debug_line    0x00000082       0xb1 ./../Source/keys.o
  .debug_line    0x00000133       0xc4 ./../Source/lcd.o
- .debug_line    0x000001f7      0x114 ./../Source/main.o
- .debug_line    0x0000030b      0x189 ./../Source/MRF24J40.o
- .debug_line    0x00000494       0x52 ./../Source/pll.o
- .debug_line    0x000004e6       0x87 ./../Source/spi.o
- .debug_line    0x0000056d       0xc8 ./../Source/uart.o
- .debug_line    0x00000635       0x84 ./../Source/vic.o
- .debug_line    0x000006b9       0x8a c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
- .debug_line    0x00000743       0x61 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_line    0x000001f7      0x116 ./../Source/main.o
+ .debug_line    0x0000030d      0x189 ./../Source/MRF24J40.o
+ .debug_line    0x00000496       0x52 ./../Source/pll.o
+ .debug_line    0x000004e8       0x87 ./../Source/spi.o
+ .debug_line    0x0000056f       0xc8 ./../Source/uart.o
+ .debug_line    0x00000637       0x84 ./../Source/vic.o
+ .debug_line    0x000006bb       0x8a c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_line    0x00000745       0x61 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
 
-.debug_str      0x00000000      0x636
+.debug_str      0x00000000      0x63c
  .debug_str     0x00000000       0x57 ./../Source/delay.o
                                  0x64 (size before relaxing)
- .debug_str     0x00000057       0x31 ./../Source/keys.o
+ .debug_str     0x00000057       0x36 ./../Source/keys.o
                                  0x69 (size before relaxing)
- .debug_str     0x00000088      0x12c ./../Source/lcd.o
+ .debug_str     0x0000008d      0x12c ./../Source/lcd.o
                                 0x165 (size before relaxing)
- .debug_str     0x000001b4       0xdc ./../Source/main.o
-                                 0xed (size before relaxing)
- .debug_str     0x00000290      0x20f ./../Source/MRF24J40.o
-                                0x295 (size before relaxing)
- .debug_str     0x0000049f       0x19 ./../Source/pll.o
+ .debug_str     0x000001b9       0xdd ./../Source/main.o
+                                 0xf3 (size before relaxing)
+ .debug_str     0x00000296      0x20f ./../Source/MRF24J40.o
+                                0x2ad (size before relaxing)
+ .debug_str     0x000004a5       0x19 ./../Source/pll.o
                                  0x3f (size before relaxing)
- .debug_str     0x000004b8       0x87 ./../Source/spi.o
+ .debug_str     0x000004be       0x87 ./../Source/spi.o
                                  0xd3 (size before relaxing)
- .debug_str     0x0000053f       0x96 ./../Source/uart.o
+ .debug_str     0x00000545       0x96 ./../Source/uart.o
                                  0xf8 (size before relaxing)
- .debug_str     0x000005d5       0x61 ./../Source/vic.o
+ .debug_str     0x000005db       0x61 ./../Source/vic.o
                                  0xa0 (size before relaxing)
 
 .debug_frame    0x00000000      0x708
