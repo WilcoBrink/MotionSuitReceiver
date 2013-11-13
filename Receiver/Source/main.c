@@ -145,7 +145,6 @@ short *calibratie()
 	calibratie_waarde[0]=xi/10;
 	calibratie_waarde[1]=yi/10;
 	calibratie_waarde[2]=zi/10;
-	calibratie_waarde[2]=calibratie_waarde[2]-16383;// 16383 is de waarde van de zwaartekracht
 
 	return pCalibratie;
 }
