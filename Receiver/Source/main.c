@@ -17,7 +17,7 @@
 
 unsigned short gemiddeld(int as);
 void opschuiven(void);
-short *calibratie(void);
+short calibratie(void);
 extern  void __enable_interrupts(void);
 extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128];
@@ -73,14 +73,14 @@ extern int main(void)
 		if(nieuwe_data==0xFFFF){				// wordt 0xFFFF bij een interrupt van de transceiver
 			__disable_interrupts();
 
-			opschuiven();
+			//opschuiven();
 
 			for(i=0;i<3;i++){
 				 tel[i][0]= ((Received_Dataext[2*i]<<8) + Received_Dataext[2*i+1])-Cal[i];
 			}
-			zend[0]=gemiddeld(xas);
-			zend[1]=gemiddeld(yas);
-			zend[2]=gemiddeld(zas);
+			zend[0]=tel[0][0];//gemiddeld(xas);
+			zend[1]=tel[1][0];//gemiddeld(yas);
+			zend[2]=tel[2][0];//gemiddeld(zas);
 			zend[3]=(Received_Dataext[6]<<8) + Received_Dataext[7];
 			zend[4]=(Received_Dataext[8]<<8) + Received_Dataext[9];
 			zend[5]=(Received_Dataext[10]<<8) + Received_Dataext[11];
@@ -122,14 +122,13 @@ unsigned short gemiddeld(int as)
 	return value;
 }
 
-short *calibratie()
+short calibratie()
 {
 	short x,y,z,i;
-	short calibratie[3];
+	short calibratie_waarde[3];
 	short *pCalibratie;
-	pCalibratie=&calibratie[0];
+	pCalibratie=&calibratie_waarde[0];
 	int xi,yi,zi=0;
-	char b=0;
 
 	for (i=0;i<10;i++)
 	{
@@ -143,9 +142,9 @@ short *calibratie()
 		nieuwe_data=0;
 	}
 
-	calibratie[0]=xi/10;
-	calibratie[1]=yi/10;
-	calibratie[2]=zi/10;
+	calibratie_waarde[0]=xi/10;
+	calibratie_waarde[1]=yi/10;
+	calibratie_waarde[2]=zi/10;
 
 
 	return pCalibratie;
