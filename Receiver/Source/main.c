@@ -63,8 +63,10 @@ extern int main(void)
 	pCal=calibratie();
 
 	Cal[0]=*pCal;
-	Cal[1]=*pCal+1;
-	Cal[2]=*pCal+2;
+	pCal++;
+	Cal[1]=*pCal;
+	pCal++;
+	Cal[2]=*pCal;
 
 	while(1)
 	{	
