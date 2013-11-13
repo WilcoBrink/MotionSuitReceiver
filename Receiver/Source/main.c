@@ -17,7 +17,7 @@
 
 unsigned short gemiddeld(int as);
 void opschuiven(void);
-short calibratie(void);
+short *calibratie(void);
 extern  void __enable_interrupts(void);
 extern  void __disable_interrupts(void);
 extern	char Received_Dataext[128];
@@ -60,11 +60,11 @@ extern int main(void)
 
 	}
 
-	*pCal=calibratie();
+	pCal=calibratie();
 
-	Cal[0]=pCal;
-	Cal[1]=pCal+1;
-	Cal[2]=pCal+2;
+	Cal[0]=*pCal;
+	Cal[1]=*pCal+1;
+	Cal[2]=*pCal+2;
 
 	while(1)
 	{	
@@ -120,7 +120,7 @@ unsigned short gemiddeld(int as)
 	return value;
 }
 
-short calibratie()
+short *calibratie()
 {
 	short x,y,z,i;
 	short calibratie[3];
