@@ -39,7 +39,7 @@ LOAD crt0.o
 startup
  *(.startup)
 
-.text           0x00000000     0x2a34
+.text           0x00000000     0x2a5c
  *(EXCLUDE_FILE(*text.iwram*) .text)
  .text          0x00000000      0x190 crt0.o
                 0x00000000                _start
@@ -72,57 +72,57 @@ startup
                 0x00000970                lcd_cursor_right
                 0x0000098c                lcd_display_sleft
                 0x000009a8                lcd_display_sright
- .text          0x000009c4      0x64c ./../Source/main.o
+ .text          0x000009c4      0x674 ./../Source/main.o
                 0x000009c4                main
                 0x00000ccc                opschuiven
                 0x00000dac                gemiddeld
                 0x00000e68                calibratie
- .text          0x00001010      0xc3c ./../Source/MRF24J40.o
-                0x00001010                MRF24J40_init
-                0x00001284                MRF24J40_send_byte
-                0x000012c4                MRF24J40_send_string
-                0x00001330                MRF24J40_send
-                0x00001514                MRF24J40_receive
-                0x00001620                MRF24J40_interrupt
-                0x00001960                MRF24J40_error
-                0x00001988                MRF24_Write_Short
-                0x000019c0                MRF24_Read_Short
-                0x00001a1c                MRF24_Write_Long
-                0x00001a48                MRF24_Read_Long
-                0x00001b78                MRF24J40_sleep
-                0x00001ba4                MRF24J40_wake
-                0x00001be0                StringCopy
- .text          0x00001c4c       0xc8 ./../Source/pll.o
-                0x00001c4c                PLL_init
- .text          0x00001d14      0x2f4 ./../Source/spi.o
-                0x00001d14                SPI_init
-                0x00001db4                SPI_set_8_bit
-                0x00001df8                SPI_set_12_bit
-                0x00001e3c                SPI_set_16_bit
-                0x00001e80                SPI_set_low_speed
-                0x00001ec0                SPI_set_high_speed
-                0x00001f00                SPI_get
-                0x00001f94                SPI_put
- .text          0x00002008      0x4b8 ./../Source/uart.o
-                0x00002008                UART_init
-                0x00002090                UART_put
-                0x0000215c                UART_putchar
-                0x000021ac                UART_putbin
-                0x00002274                UART_putint
-                0x0000229c                UART_puthex
-                0x000022c4                UART_get
-                0x0000231c                UART_get_unsigned
- .text          0x000024c0      0x45c ./../Source/vic.o
-                0x000024c0                VicSetup
-                0x00002894                DisableVectorInt
-                0x000028d8                EnableVectorInt
- .text          0x0000291c      0x114 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
-                0x0000291c                __aeabi_uidiv
-                0x0000291c                __udivsi3
-                0x00002a10                __aeabi_uidivmod
- .text          0x00002a30        0x4 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
-                0x00002a30                __aeabi_idiv0
-                0x00002a30                __aeabi_ldiv0
+ .text          0x00001038      0xc3c ./../Source/MRF24J40.o
+                0x00001038                MRF24J40_init
+                0x000012ac                MRF24J40_send_byte
+                0x000012ec                MRF24J40_send_string
+                0x00001358                MRF24J40_send
+                0x0000153c                MRF24J40_receive
+                0x00001648                MRF24J40_interrupt
+                0x00001988                MRF24J40_error
+                0x000019b0                MRF24_Write_Short
+                0x000019e8                MRF24_Read_Short
+                0x00001a44                MRF24_Write_Long
+                0x00001a70                MRF24_Read_Long
+                0x00001ba0                MRF24J40_sleep
+                0x00001bcc                MRF24J40_wake
+                0x00001c08                StringCopy
+ .text          0x00001c74       0xc8 ./../Source/pll.o
+                0x00001c74                PLL_init
+ .text          0x00001d3c      0x2f4 ./../Source/spi.o
+                0x00001d3c                SPI_init
+                0x00001ddc                SPI_set_8_bit
+                0x00001e20                SPI_set_12_bit
+                0x00001e64                SPI_set_16_bit
+                0x00001ea8                SPI_set_low_speed
+                0x00001ee8                SPI_set_high_speed
+                0x00001f28                SPI_get
+                0x00001fbc                SPI_put
+ .text          0x00002030      0x4b8 ./../Source/uart.o
+                0x00002030                UART_init
+                0x000020b8                UART_put
+                0x00002184                UART_putchar
+                0x000021d4                UART_putbin
+                0x0000229c                UART_putint
+                0x000022c4                UART_puthex
+                0x000022ec                UART_get
+                0x00002344                UART_get_unsigned
+ .text          0x000024e8      0x45c ./../Source/vic.o
+                0x000024e8                VicSetup
+                0x000028bc                DisableVectorInt
+                0x00002900                EnableVectorInt
+ .text          0x00002944      0x114 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+                0x00002944                __aeabi_uidiv
+                0x00002944                __udivsi3
+                0x00002a38                __aeabi_uidivmod
+ .text          0x00002a58        0x4 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+                0x00002a58                __aeabi_idiv0
+                0x00002a58                __aeabi_ldiv0
  *(.text.*)
  *(.stub)
  *(.gnu.warning)
@@ -130,33 +130,33 @@ startup
  *(.glue_7 .glue_7t)
  .glue_7        0x00000000        0x0 linker stubs
  .glue_7t       0x00000000        0x0 linker stubs
-                0x00002a34                . = ALIGN (0x4)
+                0x00002a5c                . = ALIGN (0x4)
 
-.vfp11_veneer   0x00002a34        0x0
+.vfp11_veneer   0x00002a5c        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x00002a34        0x0
+.v4_bx          0x00002a5c        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00002a34        0x0
+.iplt           0x00002a5c        0x0
  .iplt          0x00000000        0x0 crt0.o
 
-.rodata         0x00002a34       0x1c
+.rodata         0x00002a5c       0x1c
  *(.rodata)
- .rodata        0x00002a34       0x1c ./../Source/main.o
+ .rodata        0x00002a5c       0x1c ./../Source/main.o
  *all.rodata*(*)
  *(.roda)
  *(.rodata.*)
  *(.gnu.linkonce.r*)
-                0x00002a50                . = ALIGN (0x4)
-                0x00002a50                __ro_end = .
+                0x00002a78                . = ALIGN (0x4)
+                0x00002a78                __ro_end = .
 
-.rel.dyn        0x00002a50        0x0
+.rel.dyn        0x00002a78        0x0
  .rel.iplt      0x00000000        0x0 crt0.o
 
-.data           0x40000000       0x94 load address 0x00002a50
+.data           0x40000000       0x94 load address 0x00002a78
                 0x40000000                __data_beg__ = .
-                0x00002a50                __data_beg_src__ = __ro_end
+                0x00002a78                __data_beg_src__ = __ro_end
  *(.data)
  .data          0x40000000        0x0 crt0.o
  .data          0x40000000        0x0 ./../Source/delay.o
@@ -178,10 +178,10 @@ startup
                 0x40000094                __data_end__ = .
                 0x40000094                __data_end = .
 
-.igot.plt       0x40000094        0x0 load address 0x00002ae4
+.igot.plt       0x40000094        0x0 load address 0x00002b0c
  .igot.plt      0x00000000        0x0 crt0.o
 
-.bss            0x40000094       0xdc load address 0x00002ae4
+.bss            0x40000094       0xdc load address 0x00002b0c
                 0x40000094                __bss_start = .
                 0x40000094                __bss_beg__ = .
  *(.bss)
@@ -329,18 +329,18 @@ OUTPUT(./../Build/Project.elf elf32-littlearm)
  .debug_aranges
                 0x00000140       0x20 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
 
-.debug_line     0x00000000      0x7a2
+.debug_line     0x00000000      0x7a4
  .debug_line    0x00000000       0x82 ./../Source/delay.o
  .debug_line    0x00000082       0xb1 ./../Source/keys.o
  .debug_line    0x00000133       0xc4 ./../Source/lcd.o
- .debug_line    0x000001f7      0x112 ./../Source/main.o
- .debug_line    0x00000309      0x189 ./../Source/MRF24J40.o
- .debug_line    0x00000492       0x52 ./../Source/pll.o
- .debug_line    0x000004e4       0x87 ./../Source/spi.o
- .debug_line    0x0000056b       0xc8 ./../Source/uart.o
- .debug_line    0x00000633       0x84 ./../Source/vic.o
- .debug_line    0x000006b7       0x8a c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
- .debug_line    0x00000741       0x61 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_line    0x000001f7      0x114 ./../Source/main.o
+ .debug_line    0x0000030b      0x189 ./../Source/MRF24J40.o
+ .debug_line    0x00000494       0x52 ./../Source/pll.o
+ .debug_line    0x000004e6       0x87 ./../Source/spi.o
+ .debug_line    0x0000056d       0xc8 ./../Source/uart.o
+ .debug_line    0x00000635       0x84 ./../Source/vic.o
+ .debug_line    0x000006b9       0x8a c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_line    0x00000743       0x61 c:/hu_armdevenv/dev_tools/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
 
 .debug_str      0x00000000      0x636
  .debug_str     0x00000000       0x57 ./../Source/delay.o

@@ -145,6 +145,7 @@ short *calibratie()
 	calibratie_waarde[0]=xi/10;
 	calibratie_waarde[1]=yi/10;
 	calibratie_waarde[2]=zi/10;
+	calibratie_waarde[2]=16383-calibratie_waarde[2];
 
 	return pCalibratie;
 }
