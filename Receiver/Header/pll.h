@@ -1,9 +1,6 @@
 /*
     ARM IP interface
-
-    pll.h:
-          PLL-initialisatie testboard
-
+    pll.h: PLL-initialisatie testboard
 */
 
 #ifndef PLL_H
