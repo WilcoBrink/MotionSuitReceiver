@@ -36,7 +36,7 @@ unsigned short tel [6][samples];		// 2D array used by MAV filter
 extern int main(void)
 { 
 	/*   init vars   */
-	unsigned short send[12];
+	unsigned short send[22];
 	int i,t;
 	short *pCal;
 	short Cal[6];
@@ -81,7 +81,7 @@ extern int main(void)
 			__disable_interrupts();		// Ignore interrupts while reading sensor and sending them via UART
 
 			//array_shift_right();		// Shift old values to  make room for the new data
-
+			/*
 			for(i=0;i<3;i++){			// Loop to read the 3 accelerometer axes
 				 tel[i][0]= ((Received_Dataext[2*i]<<8) + Received_Dataext[2*i+1])-Cal[i];
 			}
@@ -89,7 +89,24 @@ extern int main(void)
 			for(i=3;i<6;i++){
 				 tel[i][0]= ((Received_Dataext[2*i+6]<<8) + Received_Dataext[2*i+7])-Cal[i];
 			}
+			*/
+			//////////////////////////////////////
+			int j;
+			for(j=0;j<4;j++)
+			{
 
+				for (i=0;i<4;i++){
+					send[j] = send[j]+(Received_Dataext[i+j]<<(8*(i+j)));
+				}
+
+			}
+
+			for(j=4;j<8;j++)
+			{
+				send[j]=Received_Dataext[j+13]+(Received_Dataext[j+14]<<8);
+
+			}
+			/*
 			send[0]=tel[0][0];//average(xAxis);		// MAV filter
 			send[1]=tel[1][0];//average(yAxis);
 			send[2]=tel[2][0];//average(zAxis);
@@ -102,8 +119,8 @@ extern int main(void)
 			send[9]=(Received_Dataext[18]<<8) + Received_Dataext[19];
 			send[10]=(Received_Dataext[20]<<8) + Received_Dataext[21];
 			send[11]=(Received_Dataext[22]<<8) + Received_Dataext[23];
-
-			for (i=0;i<12;i++)			// Loop to send the 6 sensor values to the computer
+			*/
+			for (i=0;i<7;i++)			// Loop to send the 6 sensor values to the computer
 			{
 				UART_putint(send[i]);
 				UART_put(",");			// Comma used as split token in Processing
