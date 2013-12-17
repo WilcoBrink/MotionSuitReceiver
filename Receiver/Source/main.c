@@ -36,7 +36,8 @@ unsigned short tel [6][samples];		// 2D array used by MAV filter
 extern int main(void)
 { 
 	/*   init vars   */
-	unsigned short send[22];
+	int sendQ[4];
+	unsigned short sendA[3];
 	int i,t;
 	short *pCal;
 	short Cal[6];
@@ -54,14 +55,16 @@ extern int main(void)
 	lcd_print("Hij is opgestart");
 	delay_ms(500);
 
+	__enable_interrupts();
+/*
 	for(i=0;i<6;i++)					// Loop to clear the array used in the MAV filter
 	{
 		for (t=0;t<samples;t++){
 			tel[i][t] = 0;
 		}
 	}
-
-	pCal=calibrate();					// Get calibration values
+*/
+/*	pCal=calibrate();					// Get calibration values
 
 	Cal[0]=*pCal;
 	pCal++;
@@ -74,6 +77,7 @@ extern int main(void)
 	Cal[4]=*pCal;
 	pCal++;
 	Cal[5]=*pCal;
+*/
 
 	while(1)
 	{	
@@ -94,16 +98,16 @@ extern int main(void)
 			int j;
 			for(j=0;j<4;j++)
 			{
-
+				sendQ[j]=0;
 				for (i=0;i<4;i++){
-					send[j] = send[j]+(Received_Dataext[i+j]<<(8*(i+j)));
+					sendQ[j] = sendQ[j]+(Received_Dataext[i+(j*4)]<<(8*i));
 				}
 
 			}
 
-			for(j=4;j<8;j++)
+			for(j=0;j<3;j++)
 			{
-				send[j]=Received_Dataext[j+13]+(Received_Dataext[j+14]<<8);
+				sendA[j]=Received_Dataext[(j*2)+17]+(Received_Dataext[(j*2)+16]<<8);
 
 			}
 			/*
@@ -119,14 +123,20 @@ extern int main(void)
 			send[9]=(Received_Dataext[18]<<8) + Received_Dataext[19];
 			send[10]=(Received_Dataext[20]<<8) + Received_Dataext[21];
 			send[11]=(Received_Dataext[22]<<8) + Received_Dataext[23];
-			*/
-			for (i=0;i<7;i++)			// Loop to send the 6 sensor values to the computer
+		*/
+			for (i=0;i<4;i++)			// Loop to send the 6 sensor values to the computer
 			{
-				UART_putint(send[i]);
+				UART_putint(sendQ[i]);
+				UART_put(",");			// Comma used as split token in Processing
+			}
+			for (i=0;i<3;i++)			// Loop to send the 6 sensor values to the computer
+			{
+				UART_putint(sendA[i]);
 				UART_put(",");			// Comma used as split token in Processing
 			}
 
 			UART_put("\n");				// New line used by Processing to recognize end of transmission
+
 			newData=0x0000;				// Clear newData
 			__enable_interrupts();		// Enable interrupts
 		}
